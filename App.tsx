@@ -3,9 +3,11 @@ import { StyleSheet, Text, View, Platform, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import { useState, useEffect } from 'react';
 
+import ArticleCard from './components/ArticleCard';
+
 export default function App() {
 
-  const [topItemids, setTopItemIds] = useState([]);
+  const [topItemIds, setTopItemIds] = useState([]);
   const [error, setError] = useState(false);
   const [limit, setLimit] = useState(10);
 
@@ -26,9 +28,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.heading}>Top 10 from HackerNews</Text>
       {
-        topItemids.slice(0, limit).map((itemId) => {
-          return <Text key={itemId}>{itemId}</Text>;
+        topItemIds.slice(0, limit).map((itemId) => {
+          return <ArticleCard itemId={itemId}/>
         })
       }
       <Text>{error && "Error fetching top items."}</Text>
@@ -47,4 +50,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     top: Constants.statusBarHeight,
   },
+  heading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16
+  }
 });
