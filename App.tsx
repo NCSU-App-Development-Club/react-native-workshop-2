@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform, Dimensions } from 'react-native';
+import Constants from 'expo-constants';
 
 export default function App() {
   return (
@@ -12,9 +13,12 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 8,
+    height: Platform.OS == "android" ? Dimensions.get('window').height : Dimensions.get('window').height - Constants.statusBarHeight,
+    width: Dimensions.get('window').width,
+    top: Constants.statusBarHeight,
   },
 });
