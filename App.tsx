@@ -1,11 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Platform, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
+import { useState, useEffect } from 'react';
 
 export default function App() {
+
+  const [topItemids, setTopItemIds] = useState([]);
+  const [error, setError] = useState(false);
+  const [limit, setLimit] = useState(10);
+
+  async function getTopItemIds() {
+    setError(false);
+    try {
+      const res = await fetch("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty");
+      const data = await res.json();
+      setTopItemIds(data);
+    } catch {
+      setError(true);
+    }
+  }
+
+  useEffect(() => {
+    getTopItemIds();
+  }, [])
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      {
+        topItemids.slice(0, limit).map((itemId) => {
+          return <Text key={itemId}>{itemId}</Text>;
+        })
+      }
+      <Text>{error && "Error fetching top items."}</Text>
       <StatusBar style="auto" />
     </View>
   );
