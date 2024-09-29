@@ -1,5 +1,6 @@
-import { Text, Linking } from 'react-native'
-import { useState, useEffect } from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+import { useState, useEffect } from 'react';
+import * as WebBrowser from 'expo-web-browser';
 
 interface ArticleCardProps {
     itemId: number
@@ -45,9 +46,31 @@ export default function ArticleCard(props: ArticleCardProps) {
     
     return (
         <>
-            <Text style={{color: 'blue'}} onPress={() => Linking.openURL(articleInfo.url)}>
-                {articleInfo.title + "\n"}
-            </Text>
+            <View style={styles.card}>
+                <Text key={articleInfo.id} style={styles.text} onPress={() => WebBrowser.openBrowserAsync(articleInfo.url)}>
+                    {(articleInfo.title || "Loading...")}
+                </Text>
+                <Text style={{color: 'gray', ...styles.text}}>
+                    Author: {(articleInfo.by || "")}
+                </Text>
+                <Text style={{color: 'gray', ...styles.text}}>
+                    Upvotes: {(articleInfo.score || "")}
+                </Text>
+            </View>
         </>
     )
 }
+
+const styles = StyleSheet.create({
+    card: {
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: 'orange',
+        width: '80%',
+        padding: 8,
+        marginTop: 12,
+    },
+    text: {
+        marginBottom: 8
+    }
+})

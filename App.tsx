@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Platform, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Platform, Dimensions, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { useState, useEffect } from 'react';
 
@@ -9,7 +9,7 @@ export default function App() {
 
   const [topItemIds, setTopItemIds] = useState([]);
   const [error, setError] = useState(false);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(50);
 
   async function getTopItemIds() {
     setError(false);
@@ -28,12 +28,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Top 10 from HackerNews</Text>
-      {
-        topItemIds.slice(0, limit).map((itemId) => {
-          return <ArticleCard itemId={itemId}/>
-        })
-      }
+      <Text style={styles.heading}>HackerNews</Text>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
+        {
+          topItemIds.slice(0, limit).map((itemId) => {
+            return <ArticleCard itemId={itemId}/>
+          })
+        }
+      </ScrollView>
+      
       <Text>{error && "Error fetching top items."}</Text>
       <StatusBar style="auto" />
     </View>
@@ -42,10 +45,9 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: 'beige',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 8,
     height: Platform.OS == "android" ? Dimensions.get('window').height : Dimensions.get('window').height - Constants.statusBarHeight,
     width: Dimensions.get('window').width,
     top: Constants.statusBarHeight,
@@ -53,6 +55,15 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 16
+    paddingVertical: 16,
+    backgroundColor: 'orange',
+    width: '100%',
+    textAlign: 'center'
+  },
+  scrollView: {
+    width: '100%',
+  },
+  scrollViewContent: {
+    alignItems: 'center'
   }
 });
