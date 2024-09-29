@@ -26,7 +26,7 @@ interface Item {
 
 export default function ArticleCard(props: ArticleCardProps) {
 
-    const [articleInfo, setArticleInfo] = useState<Item | any>({});
+    const [articleInfo, setArticleInfo] = useState<Item>();
     const [error, setError] = useState(false);
 
     async function getArticleInfo() {
@@ -46,15 +46,15 @@ export default function ArticleCard(props: ArticleCardProps) {
     
     return (
         <>
-            <View style={styles.card}>
-                <Text key={articleInfo.id} style={styles.text} onPress={() => WebBrowser.openBrowserAsync(articleInfo.url)}>
-                    {(articleInfo.title || "Loading...")}
+            <View key={articleInfo?.id} style={styles.card}>
+                <Text style={styles.text} onPress={() => WebBrowser.openBrowserAsync(articleInfo?.url || "")}>
+                    {(articleInfo?.title || "Loading...")}
                 </Text>
                 <Text style={{color: 'gray', ...styles.text}}>
-                    Author: {(articleInfo.by || "")}
+                    Author: {(articleInfo?.by || "")}
                 </Text>
                 <Text style={{color: 'gray', ...styles.text}}>
-                    Upvotes: {(articleInfo.score || "")}
+                    Upvotes: {(articleInfo?.score || "")}
                 </Text>
             </View>
         </>
