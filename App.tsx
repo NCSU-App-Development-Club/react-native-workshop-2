@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'beige',
     alignItems: 'center',
     justifyContent: 'center',
-    height: Platform.OS == "android" ? Dimensions.get('window').height : Dimensions.get('window').height - Constants.statusBarHeight,
+    height: Platform.OS == "android" ? Dimensions.get('window').height + Constants.statusBarHeight : Dimensions.get('window').height - Constants.statusBarHeight,
     width: Dimensions.get('window').width,
     top: Constants.statusBarHeight,
   },
