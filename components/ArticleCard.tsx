@@ -1,5 +1,6 @@
-import { Text, Linking } from 'react-native'
+import { Text } from 'react-native'
 import { useState, useEffect } from 'react'
+import * as WebBrowser from 'expo-web-browser'
 
 interface ArticleCardProps {
     itemId: number
@@ -25,29 +26,29 @@ interface Item {
 
 export default function ArticleCard(props: ArticleCardProps) {
 
-    const [articleInfo, setArticleInfo] = useState<Item | any>({});
-    const [error, setError] = useState(false);
+  const [articleInfo, setArticleInfo] = useState<Item | any>({});
+  const [error, setError] = useState(false);
 
-    async function getArticleInfo() {
-        setError(false);
-        try {
-          const res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${props.itemId}.json?print=pretty`);
-          const data = await res.json();
-          setArticleInfo(data);
-        } catch {
-          setError(true);
-        }
-      }
-    
-      useEffect(() => {
-        getArticleInfo();
-      }, [])
-    
-    return (
-        <>
-            <Text style={{color: 'blue'}} onPress={() => Linking.openURL(articleInfo.url)}>
-                {articleInfo.title + "\n"}
-            </Text>
-        </>
-    )
+  async function getArticleInfo() {
+    setError(false);
+    try {
+      const res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${props.itemId}.json?print=pretty`);
+      const data = await res.json();
+      setArticleInfo(data);
+    } catch {
+      setError(true);
+    }
+  }
+  
+  useEffect(() => {
+    getArticleInfo();
+  }, [])
+  
+  return (
+      <>
+          <Text style={{color: 'blue'}} onPress={() => WebBrowser.openBrowserAsync(articleInfo.url)}>
+              {articleInfo.title + "\n"}
+          </Text>
+      </>
+  )
 }
